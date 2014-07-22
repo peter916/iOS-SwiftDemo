@@ -1,4 +1,11 @@
 安装cocoapods
 http://code4app.com/article/cocoapods-install-usage
 
+vim PodFile
+
+platform :ios, '7.0'
+pod "AFNetworking", "~> 2.0"
+
+pod install
+
 
