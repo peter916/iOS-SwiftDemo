@@ -26,6 +26,10 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         self.loadingIndicator.startAnimating()
         
+        //let backbround = UIImage(named:"background.png")
+       // self.view.backgroundColor = UIColor(patternImage: backbround)
+        
+        
         //1.key point
         if ( ios8() ) {
             locationManager.requestAlwaysAuthorization()
@@ -57,6 +61,16 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
         if ( location.horizontalAccuracy > 0 ) {
             self.latitude.text = "\(location.coordinate.latitude)"
             self.longitude.text = "\(location.coordinate.longitude)"
+            
+            let manager = AFHTTPRequestOperationManager()
+            let url = "http://api.openweathermap.org/data/2.5/weather"
+            let params = ["lat":self.latitude.text,"lon":self.longitude.text,"cnt":0]
+            
+            manager.GET(url, parameters: params, success:{(operation:AFHTTPRequestOperation!,responseObject:AnyObject!) in
+                    println("JSON:"+responseObject.description!)
+                }, failure: {(operation:AFHTTPRequestOperation!, error:NSError!) in
+                    println("error:"+error.description!)
+                })
             
             locationManager.stopUpdatingLocation()
         }
