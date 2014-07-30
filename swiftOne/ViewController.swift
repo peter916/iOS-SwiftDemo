@@ -63,10 +63,10 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
             self.longitude.text = "\(location.coordinate.longitude)"
             
             let manager = AFHTTPRequestOperationManager()
-            let url = "http://api.openweathermap.org/data/2.5/weather"
-            let params = ["lat":self.latitude.text,"lon":self.longitude.text,"cnt":0]
+            let url = "https://api.douban.com/v2/movie/us_box"
+            //let params = ["lat":self.latitude.text,"lon":self.longitude.text,"cnt":0]
             
-            manager.GET(url, parameters: params, success:{(operation:AFHTTPRequestOperation!,responseObject:AnyObject!) in
+            manager.GET(url, parameters: nil, success:{(operation:AFHTTPRequestOperation!,responseObject:AnyObject!) in
                     println("JSON:"+responseObject.description!)
                 }, failure: {(operation:AFHTTPRequestOperation!, error:NSError!) in
                     println("error:"+error.description!)
