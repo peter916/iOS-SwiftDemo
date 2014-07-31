@@ -18,11 +18,45 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         </activityIndicatorView>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" ambiguous="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="cell" id="jfJ-62-pgp" customClass="MovieTableViewCell" customModule="swiftOne" customModuleProvider="target">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="YKM-mc-E5R" customClass="MovieTableViewCell" customModule="swiftOne" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jfJ-62-pgp" id="PDj-M4-K6a">
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="YKM-mc-E5R" id="ncA-mw-mMq">
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ovq-As-i52">
+                                            <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                                            <variation key="widthClass=compact" fixedFrame="YES">
+                                                <rect key="frame" x="12" y="3" width="59" height="43"/>
+                                            </variation>
+                                        </imageView>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k1n-gQ-7PA">
+                                            <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                            <variation key="widthClass=compact" fixedFrame="YES">
+                                                <rect key="frame" x="79" y="3" width="130" height="41"/>
+                                            </variation>
+                                        </label>
+                                    </subviews>
+                                    <variation key="default">
+                                        <mask key="subviews">
+                                            <exclude reference="Ovq-As-i52"/>
+                                            <exclude reference="k1n-gQ-7PA"/>
+                                        </mask>
+                                    </variation>
+                                    <variation key="widthClass=compact">
+                                        <mask key="subviews">
+                                            <include reference="Ovq-As-i52"/>
+                                            <include reference="k1n-gQ-7PA"/>
+                                        </mask>
+                                    </variation>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="movieImageView" destination="Ovq-As-i52" id="IEi-bQ-IIc"/>
+                                    <outlet property="movieTitleLabel" destination="k1n-gQ-7PA" id="4sP-PZ-znX"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <variation key="widthClass=compact" ambiguous="YES">
@@ -40,7 +74,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KAb-rg-BOC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1216.5" y="128"/>
+            <point key="canvasLocation" x="-1212" y="128"/>
         </scene>
         <!--Movie Detail View Controller-->
         <scene sceneID="fO9-V4-bz2">
@@ -72,6 +106,12 @@
                                     <rect key="frame" x="34" y="75" width="89" height="49"/>
                                 </variation>
                             </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="O0Z-Tc-TzI">
+                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                                <variation key="widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="0.0" y="158" width="320" height="322"/>
+                                </variation>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
@@ -79,16 +119,19 @@
                             <mask key="subviews">
                                 <exclude reference="bZN-ev-pCo"/>
                                 <exclude reference="Cey-aQ-DLR"/>
+                                <exclude reference="O0Z-Tc-TzI"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
                             <mask key="subviews">
                                 <include reference="bZN-ev-pCo"/>
                                 <include reference="Cey-aQ-DLR"/>
+                                <include reference="O0Z-Tc-TzI"/>
                             </mask>
                         </variation>
                     </view>
                     <connections>
+                        <outlet property="_movieImage" destination="O0Z-Tc-TzI" id="rIO-KF-TaK"/>
                         <outlet property="averageLabel" destination="bZN-ev-pCo" id="LM4-zI-liT"/>
                     </connections>
                 </viewController>
