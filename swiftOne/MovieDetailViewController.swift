@@ -8,23 +8,26 @@
 
 import UIKit
 
-class MovieDetailViewController: UIViewController {
+class MovieDetailViewController: UIViewController,UITableViewDataSource,UITableViewDelegate {
 
-    @IBOutlet var averageLabel: UILabel
     @IBOutlet var _movieImage: UIImageView
+    @IBOutlet var avatarsTableView: UITableView
     var movieTitle:String = ""
     var movieAveragePoint:Double = 0
     var movieImage:String = ""
-    
+    var movie:NSDictionary = NSDictionary()
+    var casts: NSDictionary[] = []
     
     init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         // Custom initialization
         
+        
     }
     
     init(coder aDecoder: NSCoder!)  {
         super.init(coder: aDecoder)
+        
     }
     
 
@@ -32,11 +35,13 @@ class MovieDetailViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        //self.title = self.movie["title"] as String!
-       // self.navigationController.navigationItem.leftBarButtonItem.title = "返回"
-        self.title = movieTitle
-        self.averageLabel.text = "\(movieAveragePoint)"
-        println(movieImage)
+        
+
+        var data:NSDictionary = movie["subject"] as NSDictionary
+        self.title = data["title"] as? String
+        self.casts = data["casts"] as NSDictionary[]
+        
+       
         
         let imgURL:NSURL=NSURL(string:movieImage)
         let request:NSURLRequest=NSURLRequest(URL: imgURL)
@@ -54,6 +59,41 @@ class MovieDetailViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCell!{
+        
+        
+        var cell:UITableViewCell = tableView.dequeueReusableCellWithIdentifier("castscell") as UITableViewCell
+        
+        if cell == nil {
+            cell = UITableViewCell(style:.Subtitle,reuseIdentifier:"castscell")
+        }
+        
+        if casts.count > 0 {
+            var cast : NSDictionary = self.casts[indexPath.row] as NSDictionary
+            var name : String? = cast["name"] as? String
+            cell.detailTextLabel.text = name
+            cell.textLabel.text = ""
+            cell.image = UIImage(named:"Default.png")
+            var avatars:NSDictionary = cast["avatars"] as NSDictionary
+            var smallavatar: String = avatars["small"] as String
+            
+            let imgURL:NSURL=NSURL(string:smallavatar)
+            let request:NSURLRequest=NSURLRequest(URL: imgURL)
+            NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler: {(response:NSURLResponse!,data:NSData!,error:NSError!)->Void in
+                var img=UIImage(data:data)
+                cell.image = img
+                })
+            
+        }
+        
+        
+        return cell
+    }
+    
+    func tableView(tableView: UITableView!, numberOfRowsInSection section: Int) -> Int {
+        
+        return self.casts.count
+    }
 
     /*
     // #pragma mark - Navigation

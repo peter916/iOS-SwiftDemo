@@ -14,7 +14,8 @@ class DoubanMovieTableViewController: UITableViewController{
    //var tableView:UITableViewtitle
     var data = ["China","China","China"]
     
-    var movieData:NSDictionary[] = [];
+    var movieData:NSDictionary[] = []
+    var movieImages:UIImage[] = []
 
 //    init(style: UITableViewStyle) {
 //        super.init(style: style)
@@ -42,24 +43,23 @@ class DoubanMovieTableViewController: UITableViewController{
                 let dictionary = responseObject as NSDictionary!
                 self.movieData = dictionary["subjects"] as NSDictionary[]
                 var movie:NSDictionary = self.movieData[0]["subject"] as NSDictionary
+//                self.loadMovieImages()
                 
                 self.tableView.reloadData()
                 var time = dictionary["date"] as String
                 self.loading.stopAnimating()
                 self.loading.hidden = true
                 self.title = "北美票房榜\(time)"
-                
-                
             },
             failure: {(operation:AFHTTPRequestOperation!, error:NSError!) in
                 println("error:"+error.description!)
             })
         
-       self.tableView.registerClass(MovieTableViewCell.self, forCellReuseIdentifier: "cell")
+      // self.tableView.registerClass(MovieTableViewCell.self, forCellReuseIdentifier: "movieCell")
         
         
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -83,39 +83,36 @@ class DoubanMovieTableViewController: UITableViewController{
     override func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCell! {
         
         
-        var cell:MovieTableViewCell = tableView.dequeueReusableCellWithIdentifier("cell") as MovieTableViewCell
+        var cell:UITableViewCell = tableView.dequeueReusableCellWithIdentifier("movieCell") as UITableViewCell
         
-//        println(cell.contentView)
-
-        
-       println(cell)
-        //var cell = MovieTableViewCell(style:.Default,reuseIdentifier:"cell")
+        if cell == nil {
+            cell = UITableViewCell(style:.Subtitle,reuseIdentifier:"movieCell")
+        }
         
         
         if movieData.count > 0 {
             var movie:NSDictionary = self.movieData[indexPath.row]["subject"] as NSDictionary
-           // cell.textLabel.text = movie["title"] as String
-            println(movie["title"])
             var movieTitle: String? = movie["title"] as? String
-           // cell.movieTitle = movie["title"] as String
-           // cell.movieTitle = movieTitle
-            cell.movieTitleLabel!.text = movieTitle
-            var images = movie["images"] as NSDictionary
-            var imageUrl: String! = images["small"] as String!
+            var rating = movie["rating"] as NSDictionary
+            var average = rating["average"] as Double
+            cell.textLabel.text = movieTitle
             
-//            cell.text = movieTitle
-//            
-//            if imageUrl {
-//                let imgURL:NSURL=NSURL(string:imageUrl)
-//                let request:NSURLRequest=NSURLRequest(URL: imgURL)
-//                NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler: {(response:NSURLResponse!,data:NSData!,error:NSError!)->Void in
-//                    var img=UIImage(data:data)
-//                    cell.image = img
-//                    })
-//            }
+            cell.detailTextLabel.text = "平均分\(average)"
+
+            var images: NSDictionary = movie["images"] as NSDictionary
+            var imageUrl: String! = images["small"] as? String
+            cell.image = UIImage(named:"Default.png")
             
-            //cell.movieTitle = movieTitle
-            //cell.movieImage = imageUrl
+            if imageUrl {
+                let imgURL:NSURL=NSURL(string:imageUrl)
+                let request:NSURLRequest=NSURLRequest(URL: imgURL)
+                NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler: {(response:NSURLResponse!,data:NSData!,error:NSError!)->Void in
+                    var img=UIImage(data:data)
+                    cell.image = img
+                    
+                    })
+            }
+            
             
         }
 
@@ -133,11 +130,10 @@ class DoubanMovieTableViewController: UITableViewController{
         var rating = movie["rating"] as NSDictionary
         var images = movie["images"] as NSDictionary
         
-        println(rating)
-        println(rating["average"])
-      //  var average = rating["average"] as String
+        var data : NSDictionary = movieData[index] as NSDictionary
         nextView.movieTitle = title
         nextView.movieImage = images["large"] as String
+        nextView.movie = data
         
         if let averageResult = rating["average"] as? Double {
             nextView.movieAveragePoint = rating["average"] as Double
