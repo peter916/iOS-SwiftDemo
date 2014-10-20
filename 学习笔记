@@ -33,3 +33,21 @@ http://www.cnblogs.com/geory/archive/2013/02/27/2913618.html
 
 xcode 如何打包ipa？？
 根据豆瓣基础电影api如何做好一个app？
+
+
+
+swift image filter
+
+    @IBAction func applyFilter(sender: AnyObject) {
+        
+        //create an image to filter
+        let inputImage = CIImage(image:photoImageView.image)
+        //create a random color pass to a filter
+        let randomColor = [kCIInputAngleKey:(Double(arc4random_uniform(314))/100)]
+        //apply a filter to an image
+        let filteredImage = inputImage.imageByApplyingFilter("CIHueAdjust", withInputParameters: randomColor)
+        //render the filtered image
+        let renderedImage = context.createCGImage(filteredImage, fromRect: filteredImage.extent())
+        //reflect  the change back in the interface
+        photoImageView.image = UIImage(CGImage:renderedImage)
+    }
